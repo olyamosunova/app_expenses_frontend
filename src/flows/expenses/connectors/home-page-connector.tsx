@@ -1,4 +1,5 @@
 import { Box } from '@mui/material'
+import { getDaysInMonth } from 'date-fns'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { PageConnector } from 'shared/template/page'
 
@@ -20,8 +21,16 @@ export const HomePageConnector = () => {
     async (currentDate: Date) => {
       setLoading(true)
 
+      const startDate = new Date(currentDate)
+      startDate.setDate(1)
+      startDate.setHours(0, 0, 0, 0)
+
+      const endDate = new Date(currentDate)
+      endDate.setDate(getDaysInMonth(endDate))
+      endDate.setHours(23, 59, 59, 999)
+
       expensesApi
-        .getExpenses(currentDate.toISOString())
+        .getExpenses(startDate.toISOString(), endDate.toISOString())
         .then(data => {
           if (data) {
             const newExpenses = data.data ?? []

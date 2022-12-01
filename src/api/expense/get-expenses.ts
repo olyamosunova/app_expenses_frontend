@@ -10,13 +10,14 @@ type TResponse = {
   _id: string
 }
 
-export const getExpenses = (date: string) =>
+export const getExpenses = (startDate: string, endDate: any) =>
   makeRequest<TResponse[]>({
     endpoint: '/expense',
     method: 'GET',
     params: {
       query: {
-        date,
+        startDate,
+        endDate,
       },
     },
   })
