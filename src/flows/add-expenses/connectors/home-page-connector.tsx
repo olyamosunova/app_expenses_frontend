@@ -5,10 +5,8 @@ import {
   FormControl,
   InputLabel,
   NativeSelect,
-  Typography,
   TextField,
 } from '@mui/material'
-import { format } from 'date-fns'
 import { Formik, Field, FieldProps, getIn, FormikHelpers } from 'formik'
 import { PageConnector } from 'shared/template/page'
 
@@ -16,6 +14,7 @@ import { expensesApi } from 'api/expense'
 
 import { Category } from '../../../types'
 import { CATEGORY } from '../../expenses/constants'
+import { DatePickerCalendar } from '../../expenses/ui/molecules'
 import { FormNames, TFormValues, TOption } from '../types'
 
 const MoneyField = ({ field, form }: FieldProps<TFormValues>) => {
@@ -140,6 +139,22 @@ const CategoryField = ({ field }: FieldProps<TFormValues>) => {
   )
 }
 
+const DateField = ({ field, form }: FieldProps<TFormValues>) => {
+  const handleChange = (value: Date) => {
+    form.setFieldValue(field.name, value)
+  }
+
+  return (
+    <DatePickerCalendar
+      // @ts-ignore
+      date={field.value}
+      views={['day']}
+      label="Записать расходы за"
+      onChangeDate={handleChange}
+    />
+  )
+}
+
 const validateForm = (values: TFormValues) => {
   const errors: Record<string, string> = {}
 
@@ -169,15 +184,9 @@ export const HomePageConnector = () => {
     })
   }
 
-  const formattedDate = format(new Date(), 'dd.MM.yyyyг')
-
   return (
     <PageConnector>
       <Box>
-        <Typography variant="subtitle1">
-          Записать расходы за {formattedDate}
-        </Typography>
-
         <Formik<TFormValues, unknown>
           onSubmit={onSubmitForm}
           initialValues={defaultValues}
@@ -192,6 +201,7 @@ export const HomePageConnector = () => {
                 flexDirection: 'column',
               }}
             >
+              <Field name={FormNames.Date} component={DateField} />
               <Field name={FormNames.Category} component={CategoryField} />
 
               <Box sx={{ height: '4px' }} />
