@@ -4,18 +4,19 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { PageConnector } from 'shared/template/page'
 
 import { expensesApi } from 'api/expense'
+import { TGetExpenseResponse } from 'api/expense/types'
+
+import { DatePickerCalendar } from 'ui/molecules'
 
 import { AuthContext } from '../../../context'
 import { mapExpenses } from '../mappers'
-import { TExpenseResponse } from '../types'
-import { DatePickerCalendar } from '../ui/molecules'
 import { ExpensesLoader, ExpensesTable } from '../ui/molecules'
 
 export const HomePageConnector = () => {
   const auth = useContext(AuthContext)
   const [loading, setLoading] = useState(false)
   const [date, setDate] = useState(new Date().toISOString())
-  const [expenses, setExpenses] = useState<TExpenseResponse[]>([])
+  const [expenses, setExpenses] = useState<TGetExpenseResponse[]>([])
 
   const getExpenses = useCallback(
     async (currentDate: Date) => {

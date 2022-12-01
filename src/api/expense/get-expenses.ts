@@ -1,17 +1,9 @@
-import { Category } from '../../types'
 import { makeRequest } from '../make-request'
 
-type TResponse = {
-  money: string
-  category: Category
-  date: string
-  comment?: string
-  owner: string
-  _id: string
-}
+import { TGetExpenseResponse } from './types'
 
 export const getExpenses = (startDate: string, endDate: any) =>
-  makeRequest<TResponse[]>({
+  makeRequest<TGetExpenseResponse[]>({
     endpoint: '/expense',
     method: 'GET',
     params: {

@@ -10,9 +10,9 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
+import { CATEGORY } from 'shared/constants'
 
 import { Category } from '../../../../../types'
-import { CATEGORY } from '../../../constants'
 import { TTableExpenses } from '../../../types'
 
 type Props = {
