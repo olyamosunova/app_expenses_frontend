@@ -70,6 +70,9 @@ export const HomePageConnector = () => {
     >
       <DatePickerCalendar
         date={new Date(date)}
+        views={['year', 'month']}
+        label="Показано за:"
+        openTo="month"
         onChangeDate={handleChangeDates}
       />
       <ExpensesTable
