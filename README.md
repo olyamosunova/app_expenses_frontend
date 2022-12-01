@@ -1,3 +1,5 @@
+Variable URL for backend part REACT_APP_BASE_URL
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
