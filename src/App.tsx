@@ -1,15 +1,16 @@
 import 'materialize-css'
 import { AuthContext } from 'context/auth'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useAuth } from 'shared/auth'
 import { paths } from 'shared/routing'
 
 import { HomePageConnector as AddHomePageConnector } from 'flows/add-expenses'
+import { AuthConnector } from 'flows/auth'
 import { HomePageConnector as ShowHomePageConnector } from 'flows/expenses'
 import { HomePageConnector as MainHomePageConnector } from 'flows/main'
 
-import { AuthConnector } from './flows/auth'
-import { useAuth } from './shared/auth'
-import { Loader } from './ui/atoms'
+import { Loader } from 'ui/atoms'
+import { NotFound } from 'ui/pages'
 
 export const App = () => {
   const { token, login, logout, userId, ready } = useAuth()
@@ -34,6 +35,7 @@ export const App = () => {
         <Router>
           <Routes>
             <Route path={paths.home} element={<AuthConnector />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </AuthContext.Provider>
@@ -61,6 +63,7 @@ export const App = () => {
             path={paths.addExpenses.home}
             element={<AddHomePageConnector />}
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </AuthContext.Provider>
