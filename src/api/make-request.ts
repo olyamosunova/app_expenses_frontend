@@ -29,8 +29,13 @@ export const makeRequest = async <TOutput = any>({
 
   const isFormData = Boolean(body && body instanceof FormData)
 
-  const headers: { [key: string]: string } = {
+  const headers: { [key: string]: string | boolean } = {
     Accept: 'application/json',
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
+    'Access-Control-Allow-Headers':
+      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
   }
 
   if (!isFormData) {
