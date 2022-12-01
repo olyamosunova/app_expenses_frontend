@@ -1,0 +1,60 @@
+{
+  "extends": ["react-app", "prettier", "plugin:import/typescript"],
+  "plugins": ["prettier"],
+  "overrides": [
+    {
+      "files": ["**/*.story.*"],
+      "rules": {
+        "import/no-anonymous-default-export": "off"
+      }
+    },
+    {
+      "files": ["**/*.ts?(x)"]
+    }
+  ],
+  "rules": {
+    "react/jsx-key": [1],
+    "prettier/prettier": ["error"],
+    "import/order": [
+      "error",
+      {
+        "groups": ["external", "builtin", "parent", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "flows/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "ui/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "api/**",
+            "group": "builtin",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["ui", "./src/ui"],
+          ["flows", "./src/flows"],
+          ["api", "./src/api"]
+        ],
+        "extensions": [".ts", ".js", ".jsx", ".tsx", ".json"]
+      }
+    }
+  }
+}

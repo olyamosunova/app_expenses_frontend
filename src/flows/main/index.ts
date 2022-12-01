@@ -1,0 +1,1 @@
+export { HomePageConnector } from './connectors'
