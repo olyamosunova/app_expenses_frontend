@@ -1,4 +1,4 @@
-import { Category } from '../../../types'
+import { Category } from '../../types'
 
 export const CATEGORY: Record<Category, string> = {
   [Category.Travel]: 'Поездки / Такси',

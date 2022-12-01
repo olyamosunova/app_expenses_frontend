@@ -1,21 +1,16 @@
-import { TFormValues } from 'flows/add-expenses/types'
-
-import { Category } from '../../types'
 import { makeRequest } from '../make-request'
 
-type TResponse = {
-  expense: {
-    money: string
-    category: Category
-    date: string
-    comment?: string
-    owner: string
-    _id: string
-  }
+import { TAddExpenseResponse } from './types'
+
+type TPayload = {
+  date: Date
+  category: string
+  money: string
+  comment: string
 }
 
-export const addExpense = (values: TFormValues) =>
-  makeRequest<TResponse>({
+export const addExpense = (values: TPayload) =>
+  makeRequest<TAddExpenseResponse>({
     endpoint: '/expense/create',
     method: 'POST',
     params: {

@@ -1,7 +1,9 @@
-import { DEFAULT_TABLE_RESPONSES } from '../constants'
-import { TExpenseResponse, TTableExpenses } from '../types'
+import { TGetExpenseResponse } from 'api/expense/types'
 
-export const mapExpenses = (items: TExpenseResponse[]) =>
+import { DEFAULT_TABLE_RESPONSES } from '../constants'
+import { TTableExpenses } from '../types'
+
+export const mapExpenses = (items: TGetExpenseResponse[]) =>
   items.reduce<TTableExpenses>((acc, item) => {
     return {
       ...acc,
