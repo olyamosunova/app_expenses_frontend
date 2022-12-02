@@ -1,73 +1,80 @@
-import { CATEGORY } from 'shared/constants'
+import { TEMPORARY_CATEGORY } from 'shared/constants'
 
-import { Category } from '../../../types'
+import { TemporaryCategory } from '../../../types'
 import { TOption } from '../types'
 
-export const DEFAULT_CATEGORY = {
-  value: Category.Other,
-  label: CATEGORY[Category.Other],
+export const DEFAULT_TEMPORARY_CATEGORY = {
+  value: TemporaryCategory.Other,
+  label: TEMPORARY_CATEGORY[TemporaryCategory.Other],
 }
 
-export const CATEGORY_OPTIONS: TOption[] = [
-  DEFAULT_CATEGORY,
+export const CATEGORY_TEMPORARY_OPTIONS: TOption[] = [
+  DEFAULT_TEMPORARY_CATEGORY,
   {
-    value: Category.SuperMarket,
-    label: CATEGORY[Category.SuperMarket],
+    value: TemporaryCategory.SuperMarket,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.SuperMarket],
   },
   {
-    value: Category.DeliveryProducts,
-    label: CATEGORY[Category.DeliveryProducts],
+    value: TemporaryCategory.DeliveryProducts,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.DeliveryProducts],
   },
   {
-    value: Category.Clothes,
-    label: CATEGORY[Category.Clothes],
+    value: TemporaryCategory.Clothes,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Clothes],
   },
   {
-    value: Category.Cosmetics,
-    label: CATEGORY[Category.Cosmetics],
+    value: TemporaryCategory.Cosmetics,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Cosmetics],
   },
   {
-    value: Category.Cat,
-    label: CATEGORY[Category.Cat],
+    value: TemporaryCategory.Cat,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Cat],
   },
   {
-    value: Category.HouseholdGoods,
-    label: CATEGORY[Category.HouseholdGoods],
+    value: TemporaryCategory.HouseholdGoods,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.HouseholdGoods],
   },
   {
-    value: Category.Travel,
-    label: CATEGORY[Category.Travel],
+    value: TemporaryCategory.Travel,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Travel],
   },
   {
-    value: Category.Pharmacy,
-    label: CATEGORY[Category.Pharmacy],
+    value: TemporaryCategory.Pharmacy,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Pharmacy],
   },
   {
-    value: Category.HairStyle,
-    label: CATEGORY[Category.HairStyle],
+    value: TemporaryCategory.HairStyle,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.HairStyle],
   },
   {
-    value: Category.Alcohol,
-    label: CATEGORY[Category.Alcohol],
+    value: TemporaryCategory.Alcohol,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Alcohol],
   },
   {
-    value: Category.Snus,
-    label: CATEGORY[Category.Snus],
+    value: TemporaryCategory.Snus,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Snus],
   },
   {
-    value: Category.Education,
-    label: CATEGORY[Category.Education],
+    value: TemporaryCategory.Education,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Education],
   },
   {
-    value: Category.Water,
-    label: CATEGORY[Category.Water],
+    value: TemporaryCategory.Water,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Water],
   },
   {
-    value: Category.Beverages,
-    label: CATEGORY[Category.Beverages],
+    value: TemporaryCategory.Beverages,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Beverages],
   },
   {
-    value: Category.Snacks,
-    label: CATEGORY[Category.Snacks],
+    value: TemporaryCategory.Snacks,
+    label: TEMPORARY_CATEGORY[TemporaryCategory.Snacks],
+  },
+]
+
+export const CATEGORY_PERMANENT_OPTIONS: TOption[] = [
+  {
+    value: '',
+    label: '',
   },
 ]

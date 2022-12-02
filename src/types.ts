@@ -1,4 +1,4 @@
-export enum Category {
+export enum TemporaryCategory {
   SuperMarket = 'supermarket',
   DeliveryProducts = 'delivery-products',
   Clothes = 'clothes',
@@ -15,4 +15,14 @@ export enum Category {
   Beverages = 'beverages',
   Snacks = 'snacks',
   Other = 'other',
+}
+
+export enum PermanentCategory {
+  Rent = 'rent',
+  MobileConnection = 'mobile-connection',
+  CommunalPayments = 'communal-payments',
+  WorkTax = 'work-tax',
+  Sport = 'sport',
+  Lenses = 'lenses',
+  HealthyFood = 'healthy-food',
 }

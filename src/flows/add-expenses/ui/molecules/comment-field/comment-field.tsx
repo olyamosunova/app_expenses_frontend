@@ -1,12 +1,16 @@
 import { TextField } from '@mui/material'
 import { FieldProps, getIn } from 'formik'
 
-import { TFormValues } from '../../../types'
+import { TTemporaryFormValues } from '../../../types'
 
-export const CommentField = ({ field, form }: FieldProps<TFormValues>) => {
+export const CommentField = ({
+  field,
+  form,
+}: FieldProps<TTemporaryFormValues>) => {
   return (
     <TextField
       {...field}
+      disabled={form.isSubmitting}
       error={Boolean(getIn(form.errors, field.name))}
       id="comment"
       label="Введите комментарий (необязательно)"

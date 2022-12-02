@@ -1,5 +1,3 @@
-import { Category } from '../../types'
-
 export type TExpense = {
   id: string
   date: string
@@ -7,4 +5,4 @@ export type TExpense = {
   comment?: string
 }
 
-export type TTableExpenses = Record<Category, TExpense[]>
+export type TTableExpenses<T extends string> = Record<T, TExpense[]>

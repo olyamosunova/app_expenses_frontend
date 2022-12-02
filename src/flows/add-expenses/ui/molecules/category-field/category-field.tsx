@@ -1,10 +1,13 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material'
 import { FieldProps } from 'formik'
 
-import { CATEGORY_OPTIONS } from '../../../constants'
-import { TFormValues } from '../../../types'
+import { CATEGORY_TEMPORARY_OPTIONS } from '../../../constants'
+import { TTemporaryFormValues } from '../../../types'
 
-export const CategoryField = ({ field }: FieldProps<TFormValues>) => {
+export const CategoryField = ({
+  field,
+  form,
+}: FieldProps<TTemporaryFormValues>) => {
   return (
     <FormControl fullWidth>
       <InputLabel variant="standard" htmlFor="category-select-label">
@@ -15,9 +18,10 @@ export const CategoryField = ({ field }: FieldProps<TFormValues>) => {
         inputProps={{
           name: field.name,
           id: 'category-select-label',
+          disabled: form.isSubmitting,
         }}
       >
-        {CATEGORY_OPTIONS.map(({ value, label }, index) => (
+        {CATEGORY_TEMPORARY_OPTIONS.map(({ value, label }, index) => (
           <option key={index} value={value}>
             {label}
           </option>

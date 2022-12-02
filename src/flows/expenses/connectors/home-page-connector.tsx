@@ -1,91 +1,46 @@
 import { Box } from '@mui/material'
-import { getDaysInMonth } from 'date-fns'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { PageConnector } from 'shared/template/page'
-
-import { expensesApi } from 'api/expense'
-import { TGetExpenseResponse } from 'api/expense/types'
 
 import { DatePickerCalendar } from 'ui/molecules'
 
-import { AuthContext } from '../../../context'
-import { mapExpenses } from '../mappers'
-import { ExpensesLoader, ExpensesTable } from '../ui/molecules'
+import { Col } from '../../../ui/core'
+
+import { PermanentExpensesConnector } from './permanent-expenses-connector'
+import { TemporaryExpensesConnector } from './temporary-expenses-connector'
 
 export const HomePageConnector = () => {
-  const auth = useContext(AuthContext)
-  const [loading, setLoading] = useState(false)
   const [date, setDate] = useState(new Date().toISOString())
-  const [expenses, setExpenses] = useState<TGetExpenseResponse[]>([])
-
-  const getExpenses = useCallback(
-    async (currentDate: Date) => {
-      setLoading(true)
-
-      const startDate = new Date(currentDate)
-      startDate.setDate(1)
-      startDate.setHours(0, 0, 0, 0)
-
-      const endDate = new Date(currentDate)
-      endDate.setDate(getDaysInMonth(endDate))
-      endDate.setHours(23, 59, 59, 999)
-
-      expensesApi
-        .getExpenses(startDate.toISOString(), endDate.toISOString())
-        .then(data => {
-          if (data) {
-            const newExpenses = data.data ?? []
-            setExpenses(newExpenses)
-          }
-        })
-        .catch(e => {
-          if (e.response.status === 401) {
-            auth.logout()
-          }
-        })
-        .finally(() => {
-          setLoading(false)
-        })
-    },
-    [auth],
-  )
-
-  useEffect(() => {
-    getExpenses(new Date(date))
-  }, [getExpenses, date])
 
   const handleChangeDates = (value: Date) => {
     setDate(value.toISOString())
   }
 
-  const content = loading ? (
-    <ExpensesLoader />
-  ) : (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '24px',
-        marginTop: '6px',
-      }}
-    >
-      <DatePickerCalendar
-        date={new Date(date)}
-        views={['year', 'month']}
-        label="Показано за:"
-        openTo="month"
-        onChangeDate={handleChangeDates}
-      />
-      <ExpensesTable
-        isEmptyTable={!Boolean(expenses.length)}
-        expenses={mapExpenses(expenses)}
-      />
-    </Box>
-  )
-
   return (
     <PageConnector>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>{content}</Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '24px',
+            marginTop: '6px',
+          }}
+        >
+          <DatePickerCalendar
+            date={new Date(date)}
+            views={['year', 'month']}
+            label="Показано за:"
+            openTo="month"
+            onChangeDate={handleChangeDates}
+          />
+
+          <Col>
+            <PermanentExpensesConnector />
+            <TemporaryExpensesConnector date={date} />
+          </Col>
+        </Box>
+      </Box>
     </PageConnector>
   )
 }

@@ -1,6 +1,6 @@
 import { makeRequest } from '../make-request'
 
-import { TAddExpenseResponse } from './types'
+import { TAddTemporaryExpenseResponse } from './types'
 
 type TPayload = {
   date: Date
@@ -9,9 +9,9 @@ type TPayload = {
   comment: string
 }
 
-export const addExpense = (values: TPayload) =>
-  makeRequest<TAddExpenseResponse>({
-    endpoint: '/expense/create',
+export const addTemporaryExpense = (values: TPayload) =>
+  makeRequest<TAddTemporaryExpenseResponse>({
+    endpoint: '/temporary-expense/create',
     method: 'POST',
     params: {
       body: values,

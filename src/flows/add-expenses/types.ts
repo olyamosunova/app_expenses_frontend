@@ -1,8 +1,13 @@
-export enum FormNames {
+export enum TemporaryFormNames {
   Date = 'date',
   Category = 'category',
   Money = 'money',
   Comment = 'comment',
+}
+
+export enum PermanentFormNames {
+  Category = 'category',
+  Money = 'money',
 }
 
 export type TOption = {
@@ -10,9 +15,14 @@ export type TOption = {
   label: string
 }
 
-export type TFormValues = {
-  [FormNames.Date]: Date
-  [FormNames.Category]: string
-  [FormNames.Money]: string
-  [FormNames.Comment]: string
+export type TTemporaryFormValues = {
+  [TemporaryFormNames.Date]: Date
+  [TemporaryFormNames.Category]: string
+  [TemporaryFormNames.Money]: string
+  [TemporaryFormNames.Comment]: string
+}
+
+export type TPermanentFormValues = {
+  [PermanentFormNames.Category]: string
+  [PermanentFormNames.Money]: string
 }
