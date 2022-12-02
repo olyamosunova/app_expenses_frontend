@@ -1,6 +1,6 @@
 import 'materialize-css'
 import { AuthContext } from 'context/auth'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { useAuth } from 'shared/auth'
 import { paths } from 'shared/routing'
 
