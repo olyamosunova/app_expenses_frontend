@@ -1,1 +1,4 @@
-export { DEFAULT_TABLE_RESPONSES } from './default-table-responses'
+export {
+  DEFAULT_TABLE_TEMPORARY_RESPONSES,
+  DEFAULT_TABLE_PERMANENT_RESPONSES,
+} from './default-table-responses'

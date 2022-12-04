@@ -1,10 +1,10 @@
-import { FormNames, TFormValues } from '../../types'
+import { TemporaryFormNames, TTemporaryFormValues } from '../../types'
 
-export const validateForm = (values: TFormValues) => {
+export const validateForm = (values: TTemporaryFormValues) => {
   const errors: Record<string, string> = {}
 
-  if (!values[FormNames.Money]) {
-    errors[FormNames.Money] = 'Заполните поле'
+  if (!values[TemporaryFormNames.Money]) {
+    errors[TemporaryFormNames.Money] = 'Заполните поле'
   }
 
   return errors

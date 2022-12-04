@@ -1,14 +1,27 @@
-import { Category } from '../../types'
+import { TemporaryCategory, PermanentCategory } from '../../types'
 
-export type TGetExpenseResponse = {
+type TGetExpenseResponse = {
   money: string
-  category: Category
   date: string
   comment?: string
   owner: string
   _id: string
 }
 
-export type TAddExpenseResponse = {
-  expense: TGetExpenseResponse
+export type TGetTemporaryExpenseResponse = TGetExpenseResponse & {
+  category: TemporaryCategory
+}
+
+export type TGetPermanentExpenseResponse = {
+  _id: string
+  values: { money: number; category: PermanentCategory }[]
+  owner: string
+}
+
+export type TAddTemporaryExpenseResponse = {
+  expense: TGetTemporaryExpenseResponse
+}
+
+export type TAddPermanentExpenseResponse = {
+  expense: TGetPermanentExpenseResponse
 }

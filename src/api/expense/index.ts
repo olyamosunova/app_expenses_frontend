@@ -1,7 +1,11 @@
-import { addExpense } from './add-expense'
-import { getExpenses } from './get-expenses'
+import { addPermanentExpenses } from './add-permanent-expenses'
+import { addTemporaryExpense } from './add-temporary-expense'
+import { getPermanentExpenses } from './get-permanent-expenses'
+import { getTemporaryExpenses } from './get-temporary-expenses'
 
 export const expensesApi = {
-  addExpense,
-  getExpenses,
+  addTemporaryExpense,
+  addPermanentExpenses,
+  getPermanentExpenses,
+  getTemporaryExpenses,
 }

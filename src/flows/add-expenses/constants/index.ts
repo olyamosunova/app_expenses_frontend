@@ -1,1 +1,4 @@
-export { DEFAULT_CATEGORY, CATEGORY_OPTIONS } from './categories'
+export {
+  DEFAULT_TEMPORARY_CATEGORY,
+  CATEGORY_TEMPORARY_OPTIONS,
+} from './categories'

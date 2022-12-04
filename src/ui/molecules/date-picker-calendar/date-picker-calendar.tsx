@@ -9,6 +9,7 @@ type Props = {
   views: CalendarPickerView[]
   label: string
   openTo?: CalendarPickerView
+  isDisabled?: boolean
   onChangeDate: (date: Date) => void
 }
 
@@ -16,12 +17,14 @@ export const DatePickerCalendar = ({
   date,
   views,
   label,
+  isDisabled,
   openTo = 'day',
   onChangeDate,
 }: Props) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
+        disabled={isDisabled}
         views={views}
         label={label}
         value={date}

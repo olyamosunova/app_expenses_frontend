@@ -1,1 +1,5 @@
-export { CATEGORY } from './category'
+export {
+  TEMPORARY_CATEGORY,
+  PERMANENT_CATEGORY,
+  PERMANENT_CATEGORY_KEYS,
+} from './category'

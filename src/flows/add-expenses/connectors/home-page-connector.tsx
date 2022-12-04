@@ -1,78 +1,116 @@
-import { Grid, Button, Box } from '@mui/material'
-import { Formik, Field, FormikHelpers } from 'formik'
+import { Box } from '@mui/material'
+import {
+  useAddPermanentExpenses,
+  useAddTemporaryExpenses,
+  usePermanentExpenses,
+} from 'features/expenses'
+import { FormikHelpers } from 'formik'
+import { useContext } from 'react'
+import { useQueryClient } from 'react-query'
+import { PERMANENT_CATEGORY_KEYS } from 'shared/constants'
 import { PageConnector } from 'shared/template/page'
 
-import { expensesApi } from 'api/expense'
+import { TGetPermanentExpenseResponse } from 'api/expense/types'
 
-import { DEFAULT_CATEGORY } from '../constants'
-import { FormNames, TFormValues } from '../types'
+import { AuthContext } from '../../../context'
+import { expensesKeys } from '../../../features/expenses/query-keys'
+import { DEFAULT_TEMPORARY_CATEGORY } from '../constants'
 import {
-  CommentField,
-  DateField,
-  MoneyField,
-  CategoryField,
-} from '../ui/molecules'
-import { validateForm } from '../utils'
+  PermanentFormNames,
+  TPermanentFormValues,
+  TTemporaryFormValues,
+} from '../types'
+import {
+  AddPermanentExpenseForm,
+  AddTemporaryExpenseForm,
+} from '../ui/organisms'
 
-const defaultValues: TFormValues = {
+const defaultTemporaryExpenseValues: TTemporaryFormValues = {
   date: new Date(),
-  category: DEFAULT_CATEGORY.value,
+  category: DEFAULT_TEMPORARY_CATEGORY.value,
   money: '',
   comment: '',
 }
 
+const getInitialPermanentValues = (
+  initialValues: TGetPermanentExpenseResponse['values'],
+): TPermanentFormValues[] => {
+  const values = Object.values(PERMANENT_CATEGORY_KEYS).map(category => ({
+    [PermanentFormNames.Category]: category,
+    [PermanentFormNames.Money]: String(
+      initialValues.find(item => item.category === category)?.money ?? '',
+    ),
+  }))
+
+  return values
+}
+
 export const HomePageConnector = () => {
-  const onSubmitForm = async (
-    values: TFormValues,
-    helpers: FormikHelpers<TFormValues>,
-  ) => {
-    expensesApi.addExpense(values).then(data => {
-      if (data?.data?.expense) {
-        helpers.resetForm()
+  const auth = useContext(AuthContext)
+  const queryClient = useQueryClient()
+
+  const { data } = usePermanentExpenses({
+    onError: error => {
+      if (error?.response?.status === 401) {
+        auth.logout()
       }
+    },
+  })
+
+  const permanentExpenses = data?.data?.[0]?.values ?? []
+  const permanentId = data?.data?.[0]?._id
+
+  const addTemporaryExpense = useAddTemporaryExpenses()
+  const addPermanentExpenses = useAddPermanentExpenses()
+
+  const handleSubmitTemporaryExpense = async (
+    values: TTemporaryFormValues,
+    helpers: FormikHelpers<TTemporaryFormValues>,
+  ) => {
+    return addTemporaryExpense.mutateAsync(values, {
+      onSuccess: data => {
+        if (data?.data?.expense) {
+          helpers.resetForm()
+          queryClient.invalidateQueries(expensesKeys.allTemporaryExpenses)
+        }
+      },
     })
   }
+
+  const handleSubmitPermanentExpense = async (values: {
+    values: TPermanentFormValues[]
+  }) => {
+    const mappedData = values.values.map(item => ({
+      ...item,
+      money: Number(item.money),
+    }))
+
+    return addPermanentExpenses.mutateAsync(
+      [permanentId ?? '', { values: mappedData }],
+      {
+        onSuccess: data => {
+          if (data?.data?.expense) {
+            queryClient.invalidateQueries(expensesKeys.permanentExpenses())
+          }
+        },
+      },
+    )
+  }
+
+  const permanentInitialValues = getInitialPermanentValues(permanentExpenses)
 
   return (
     <PageConnector>
       <Box>
-        <Formik<TFormValues, unknown>
-          onSubmit={onSubmitForm}
-          initialValues={defaultValues}
-          validate={validateForm}
-        >
-          {({ values, handleSubmit }) => (
-            <Grid
-              gap="16px"
-              sx={{
-                padding: '24px 0',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Field name={FormNames.Date} component={DateField} />
-              <Field name={FormNames.Category} component={CategoryField} />
+        <AddTemporaryExpenseForm
+          onSubmitForm={handleSubmitTemporaryExpense}
+          defaultValues={defaultTemporaryExpenseValues}
+        />
 
-              <Box sx={{ height: '4px' }} />
-
-              <Field name={FormNames.Money} component={MoneyField} />
-
-              <Field name={FormNames.Comment} component={CommentField} />
-
-              <Box sx={{ height: '4px' }} />
-
-              <Button
-                variant="contained"
-                onClick={() => {
-                  // @ts-ignore
-                  handleSubmit(values)
-                }}
-              >
-                Сохранить
-              </Button>
-            </Grid>
-          )}
-        </Formik>
+        <AddPermanentExpenseForm
+          onSubmitForm={handleSubmitPermanentExpense}
+          defaultValues={{ values: permanentInitialValues }}
+        />
       </Box>
     </PageConnector>
   )
