@@ -82,6 +82,7 @@ export const HomePageConnector = () => {
       onSuccess: data => {
         if (data?.data?.expense) {
           helpers.resetForm()
+          snackTrigger({ message: 'Ваш расход успешно записан!' })
           queryClient.invalidateQueries(expensesKeys.allTemporaryExpenses)
         }
       },
@@ -102,6 +103,7 @@ export const HomePageConnector = () => {
       {
         onSuccess: data => {
           if (data?.data?.expense) {
+            snackTrigger({ message: 'Постоянные расходы успешно обновлены!' })
             queryClient.invalidateQueries(expensesKeys.permanentExpenses())
           }
         },
