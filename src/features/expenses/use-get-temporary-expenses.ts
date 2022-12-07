@@ -1,9 +1,8 @@
-import { AxiosError } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
 
 import { expensesApi } from 'api/expense'
 
-import { AsyncReturnType } from '../types'
+import { AsyncReturnType, TResponseError } from '../types'
 
 import { expensesKeys } from './query-keys'
 
@@ -12,7 +11,7 @@ export const useTemporaryExpenses = (
   endDate: string,
   options?: UseQueryOptions<
     AsyncReturnType<typeof expensesApi.getTemporaryExpenses>,
-    AxiosError
+    TResponseError
   >,
 ) =>
   useQuery(
@@ -21,7 +20,7 @@ export const useTemporaryExpenses = (
     // @ts-ignore
     {
       staleTime: Infinity,
-      onError: (_: AxiosError) => undefined,
+      onError: (_: TResponseError) => undefined,
       ...options,
     },
   )

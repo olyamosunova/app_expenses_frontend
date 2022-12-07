@@ -1,7 +1,9 @@
 import { styled } from '@mui/material'
 import { useTemporaryExpenses } from 'features/expenses'
+import { TResponseError } from 'features/types'
 import { useContext } from 'react'
 import { TEMPORARY_CATEGORY } from 'shared/constants'
+import { snackTrigger } from 'shared/snack'
 
 import { Loader } from 'ui/atoms'
 import { Col } from 'ui/core'
@@ -16,6 +18,14 @@ const Container = styled(Col)`
   justify-content: center;
   align-items: center;
 `
+
+const processGetExpenseError = (err: TResponseError) => {
+  const message = err.response?.data?.message
+
+  if (message) {
+    snackTrigger({ message, type: 'error' })
+  }
+}
 
 type Props = {
   date: string
@@ -32,6 +42,7 @@ export const TemporaryExpensesConnector = ({ date }: Props) => {
     {
       enabled: Boolean(startDate && endDate),
       onError: e => {
+        processGetExpenseError(e)
         if (e?.response?.status === 401) {
           auth.logout()
         }
