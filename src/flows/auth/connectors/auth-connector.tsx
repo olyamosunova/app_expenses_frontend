@@ -28,6 +28,8 @@ export const AuthConnector = () => {
   const login = useLogin()
   const register = useRegister()
 
+  const isDisabled = login.isLoading || register.isLoading
+
   const registerHandler = async (
     values: TFormValues,
     validateForm: (values: TFormValues) => Promise<FormikErrors<TFormValues>>,
@@ -79,20 +81,30 @@ export const AuthConnector = () => {
               gap: '24px',
             }}
           >
-            <Field name={FormNames.Username} component={UsernameField} />
-            <Field name={FormNames.Password} component={PasswordField} />
+            <Field
+              name={FormNames.Username}
+              component={UsernameField}
+              isDisabled={isDisabled}
+            />
+            <Field
+              name={FormNames.Password}
+              component={PasswordField}
+              isDisabled={isDisabled}
+            />
             <Box sx={{ display: 'flex', gap: '16px' }}>
               <Button
                 variant="outlined"
+                disabled={isDisabled}
                 onClick={() => loginHandler(values, validateForm)}
               >
-                Войти
+                {login.isLoading ? 'Вход ...' : 'Войти'}
               </Button>
               <Button
                 variant="contained"
+                disabled={isDisabled}
                 onClick={() => registerHandler(values, validateForm)}
               >
-                Регистрация
+                {register.isLoading ? 'Регистрация ...' : 'Регистрация'}
               </Button>
             </Box>
           </Grid>

@@ -3,7 +3,11 @@ import { FieldProps, getIn } from 'formik'
 
 import { TFormValues } from '../../../types'
 
-export const PasswordField = ({ field, form }: FieldProps<TFormValues>) => {
+type Props = FieldProps<TFormValues> & {
+  isDisabled: boolean
+}
+
+export const PasswordField = ({ field, form, isDisabled }: Props) => {
   return (
     <TextField
       {...field}
@@ -11,6 +15,7 @@ export const PasswordField = ({ field, form }: FieldProps<TFormValues>) => {
       id="password"
       label="Введите пароль"
       type="password"
+      disabled={isDisabled}
       InputLabelProps={{
         shrink: true,
       }}

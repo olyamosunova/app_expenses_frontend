@@ -6,13 +6,15 @@ import {
   ListItemText,
   useTheme,
 } from '@mui/material'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { paths } from 'shared/routing'
 
-import { useAuth } from '../../../auth'
-import { paths } from '../../../routing'
+import { AuthContext } from '../../../../context'
 
 export const NavbarConnector = () => {
-  const { logout } = useAuth()
+  const { logout } = useContext(AuthContext)
+
   const theme = useTheme()
 
   return (

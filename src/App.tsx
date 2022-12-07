@@ -1,21 +1,50 @@
 import 'materialize-css'
 import { AuthContext } from 'context/auth'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { HashRouter as Router, Routes, Route } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from 'shared/auth'
 import { paths } from 'shared/routing'
 
 import { HomePageConnector as AddHomePageConnector } from 'flows/add-expenses'
 import { AuthConnector } from 'flows/auth'
 import { HomePageConnector as ShowHomePageConnector } from 'flows/expenses'
-import { HomePageConnector as MainHomePageConnector } from 'flows/main'
 
 import { Loader } from 'ui/atoms'
-import { NotFound } from 'ui/pages'
 
 import { SnackBarConnector } from './shared/snack'
 
 const queryClient = new QueryClient()
+
+type TRoute = {
+  path: string
+  element: JSX.Element
+}
+
+const withAuthRoutes: TRoute[] = [
+  {
+    path: paths.addExpenses.home,
+    element: <AddHomePageConnector />,
+  },
+  {
+    path: paths.showExpenses.home,
+    element: <ShowHomePageConnector />,
+  },
+  {
+    path: '*',
+    element: <Navigate to={paths.addExpenses.home} />,
+  },
+]
+
+const withoutAuthRoutes: TRoute[] = [
+  {
+    path: paths.auth.home,
+    element: <AuthConnector />,
+  },
+  {
+    path: '*',
+    element: <Navigate to={paths.auth.home} />,
+  },
+]
 
 export const App = () => {
   const { token, login, logout, userId, ready } = useAuth()
@@ -26,29 +55,7 @@ export const App = () => {
     return <Loader />
   }
 
-  if (!isAuthenticated) {
-    return (
-      <AuthContext.Provider
-        value={{
-          token,
-          login,
-          logout,
-          userId,
-          isAuthenticated,
-        }}
-      >
-        <QueryClientProvider client={queryClient}>
-          <Router>
-            <Routes>
-              <Route path={paths.home} element={<AuthConnector />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Router>
-          <SnackBarConnector />
-        </QueryClientProvider>
-      </AuthContext.Provider>
-    )
-  }
+  const routes = isAuthenticated ? withAuthRoutes : withoutAuthRoutes
 
   return (
     <AuthContext.Provider
@@ -63,16 +70,9 @@ export const App = () => {
       <QueryClientProvider client={queryClient}>
         <Router>
           <Routes>
-            <Route path={paths.home} element={<MainHomePageConnector />} />
-            <Route
-              path={paths.showExpenses.home}
-              element={<ShowHomePageConnector />}
-            />
-            <Route
-              path={paths.addExpenses.home}
-              element={<AddHomePageConnector />}
-            />
-            <Route path="*" element={<NotFound />} />
+            {routes.map((item, key) => (
+              <Route key={key} {...item} />
+            ))}
           </Routes>
         </Router>
         <SnackBarConnector />
