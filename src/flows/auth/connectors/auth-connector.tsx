@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField'
 import { useLogin, useRegister } from 'features/auth'
 import { Formik, Field, FieldProps, getIn, FormikErrors } from 'formik'
 import { useContext } from 'react'
+import { snackTrigger } from 'shared/snack'
 
 import { AuthContext } from '../../../context'
 import { FormNames, TFormValues } from '../types'
@@ -68,7 +69,19 @@ export const AuthConnector = () => {
     const errors = await validateForm(values)
 
     if (!Object.values(errors).length) {
-      register.mutateAsync(values)
+      register.mutateAsync(values, {
+        onSuccess: data => {
+          auth.login(data.data.data.token, data.data.data.userId)
+        },
+        onError: err => {
+          // @ts-ignore
+          const message = err.response?.data?.message
+
+          if (message) {
+            snackTrigger({ message, type: 'error' })
+          }
+        },
+      })
     }
   }
 
@@ -82,6 +95,14 @@ export const AuthConnector = () => {
       login.mutateAsync(values, {
         onSuccess: data => {
           auth.login(data.data.token, data.data.userId)
+        },
+        onError: err => {
+          // @ts-ignore
+          const message = err.response?.data?.message
+
+          if (message) {
+            snackTrigger({ message, type: 'error' })
+          }
         },
       })
     }

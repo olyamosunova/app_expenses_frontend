@@ -33,6 +33,8 @@
     "connected-react-router": "^6.6.1",
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",
+    "effector": "^22.4.0",
+    "effector-react": "^22.3.4",
     "express": "^4.18.2",
     "express-joi-validation": "^5.0.1",
     "formik": "^2.2.9",

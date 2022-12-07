@@ -1,9 +1,9 @@
 import { makeRequest } from '../make-request'
 
-import { TLoginPayload } from './types'
+import { TLoginPayload, TRegisterResponse } from './types'
 
 export const register = (values: TLoginPayload) =>
-  makeRequest({
+  makeRequest<TRegisterResponse>({
     endpoint: '/auth/register',
     method: 'POST',
     params: {
