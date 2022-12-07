@@ -1,16 +1,15 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
 import TextField from '@mui/material/TextField'
+import { useLogin, useRegister } from 'features/auth'
 import { Formik, Field, FieldProps, getIn, FormikErrors } from 'formik'
 import { useContext } from 'react'
-
-import { authApi } from 'api/auth'
 
 import { AuthContext } from '../../../context'
 import { FormNames, TFormValues } from '../types'
 
 const defaultValues: TFormValues = {
-  username: '',
-  password: '',
+  [FormNames.Username]: '',
+  [FormNames.Password]: '',
 }
 
 const validateForm = (values: TFormValues) => {
@@ -59,6 +58,8 @@ const PasswordField = ({ field, form }: FieldProps<TFormValues>) => {
 
 export const AuthConnector = () => {
   const auth = useContext(AuthContext)
+  const login = useLogin()
+  const register = useRegister()
 
   const registerHandler = async (
     values: TFormValues,
@@ -67,7 +68,7 @@ export const AuthConnector = () => {
     const errors = await validateForm(values)
 
     if (!Object.values(errors).length) {
-      authApi.register(values)
+      register.mutateAsync(values)
     }
   }
 
@@ -78,8 +79,10 @@ export const AuthConnector = () => {
     const errors = await validateForm(values)
 
     if (!Object.values(errors).length) {
-      authApi.login(values).then(data => {
-        auth.login(data.data.token, data.data.userId)
+      login.mutateAsync(values, {
+        onSuccess: data => {
+          auth.login(data.data.token, data.data.userId)
+        },
       })
     }
   }
