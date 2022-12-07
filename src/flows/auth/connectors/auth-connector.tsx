@@ -1,60 +1,26 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
-import TextField from '@mui/material/TextField'
 import { useLogin, useRegister } from 'features/auth'
-import { Formik, Field, FieldProps, getIn, FormikErrors } from 'formik'
+import { TResponseError } from 'features/types'
+import { Formik, Field, FormikErrors } from 'formik'
 import { useContext } from 'react'
 import { snackTrigger } from 'shared/snack'
 
 import { AuthContext } from '../../../context'
 import { FormNames, TFormValues } from '../types'
+import { PasswordField, UsernameField } from '../ui/molecules'
+import { validateForm } from '../utils'
 
 const defaultValues: TFormValues = {
   [FormNames.Username]: '',
   [FormNames.Password]: '',
 }
 
-const validateForm = (values: TFormValues) => {
-  const errors: Record<string, string> = {}
+const processAuthError = (err: TResponseError) => {
+  const message = err.response?.data?.message
 
-  if (!values[FormNames.Username]) {
-    errors[FormNames.Username] = 'Заполните поле'
+  if (message) {
+    snackTrigger({ message, type: 'error' })
   }
-
-  if (!values[FormNames.Password]) {
-    errors[FormNames.Password] = 'Заполните поле'
-  }
-
-  return errors
-}
-
-const UsernameField = ({ field, form }: FieldProps<TFormValues>) => {
-  return (
-    <TextField
-      {...field}
-      error={Boolean(getIn(form.errors, field.name))}
-      id="username"
-      label="Введите имя пользователя"
-      type="text"
-      InputLabelProps={{
-        shrink: true,
-      }}
-    />
-  )
-}
-
-const PasswordField = ({ field, form }: FieldProps<TFormValues>) => {
-  return (
-    <TextField
-      {...field}
-      error={Boolean(getIn(form.errors, field.name))}
-      id="password"
-      label="Введите пароль"
-      type="password"
-      InputLabelProps={{
-        shrink: true,
-      }}
-    />
-  )
 }
 
 export const AuthConnector = () => {
@@ -73,14 +39,7 @@ export const AuthConnector = () => {
         onSuccess: data => {
           auth.login(data.data.data.token, data.data.data.userId)
         },
-        onError: err => {
-          // @ts-ignore
-          const message = err.response?.data?.message
-
-          if (message) {
-            snackTrigger({ message, type: 'error' })
-          }
-        },
+        onError: processAuthError,
       })
     }
   }
@@ -96,14 +55,7 @@ export const AuthConnector = () => {
         onSuccess: data => {
           auth.login(data.data.token, data.data.userId)
         },
-        onError: err => {
-          // @ts-ignore
-          const message = err.response?.data?.message
-
-          if (message) {
-            snackTrigger({ message, type: 'error' })
-          }
-        },
+        onError: processAuthError,
       })
     }
   }
@@ -120,16 +72,15 @@ export const AuthConnector = () => {
         {({ values, validateForm }) => (
           <Grid
             gap="16px"
-            sx={{ padding: '24px 0', display: 'flex', flexDirection: 'column' }}
+            sx={{
+              padding: '24px 0',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px',
+            }}
           >
             <Field name={FormNames.Username} component={UsernameField} />
-
-            <Box sx={{ height: '4px' }} />
-
             <Field name={FormNames.Password} component={PasswordField} />
-
-            <Box sx={{ height: '4px' }} />
-
             <Box sx={{ display: 'flex', gap: '16px' }}>
               <Button
                 variant="outlined"
