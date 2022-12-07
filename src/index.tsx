@@ -8,6 +8,8 @@ import '@fontsource/roboto/700.css'
 
 import './index.css'
 
+import './shared/snack/model/init'
+
 import { App } from './App'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

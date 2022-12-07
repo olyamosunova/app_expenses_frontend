@@ -1,64 +1,32 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
-import TextField from '@mui/material/TextField'
-import { Formik, Field, FieldProps, getIn, FormikErrors } from 'formik'
+import { useLogin, useRegister } from 'features/auth'
+import { TResponseError } from 'features/types'
+import { Formik, Field, FormikErrors } from 'formik'
 import { useContext } from 'react'
-
-import { authApi } from 'api/auth'
+import { snackTrigger } from 'shared/snack'
 
 import { AuthContext } from '../../../context'
 import { FormNames, TFormValues } from '../types'
+import { PasswordField, UsernameField } from '../ui/molecules'
+import { validateForm } from '../utils'
 
 const defaultValues: TFormValues = {
-  username: '',
-  password: '',
+  [FormNames.Username]: '',
+  [FormNames.Password]: '',
 }
 
-const validateForm = (values: TFormValues) => {
-  const errors: Record<string, string> = {}
+const processAuthError = (err: TResponseError) => {
+  const message = err.response?.data?.message
 
-  if (!values[FormNames.Username]) {
-    errors[FormNames.Username] = 'Заполните поле'
+  if (message) {
+    snackTrigger({ message, type: 'error' })
   }
-
-  if (!values[FormNames.Password]) {
-    errors[FormNames.Password] = 'Заполните поле'
-  }
-
-  return errors
-}
-
-const UsernameField = ({ field, form }: FieldProps<TFormValues>) => {
-  return (
-    <TextField
-      {...field}
-      error={Boolean(getIn(form.errors, field.name))}
-      id="username"
-      label="Введите имя пользователя"
-      type="text"
-      InputLabelProps={{
-        shrink: true,
-      }}
-    />
-  )
-}
-
-const PasswordField = ({ field, form }: FieldProps<TFormValues>) => {
-  return (
-    <TextField
-      {...field}
-      error={Boolean(getIn(form.errors, field.name))}
-      id="password"
-      label="Введите пароль"
-      type="password"
-      InputLabelProps={{
-        shrink: true,
-      }}
-    />
-  )
 }
 
 export const AuthConnector = () => {
   const auth = useContext(AuthContext)
+  const login = useLogin()
+  const register = useRegister()
 
   const registerHandler = async (
     values: TFormValues,
@@ -67,7 +35,12 @@ export const AuthConnector = () => {
     const errors = await validateForm(values)
 
     if (!Object.values(errors).length) {
-      authApi.register(values)
+      register.mutateAsync(values, {
+        onSuccess: data => {
+          auth.login(data.data.data.token, data.data.data.userId)
+        },
+        onError: processAuthError,
+      })
     }
   }
 
@@ -78,8 +51,11 @@ export const AuthConnector = () => {
     const errors = await validateForm(values)
 
     if (!Object.values(errors).length) {
-      authApi.login(values).then(data => {
-        auth.login(data.data.token, data.data.userId)
+      login.mutateAsync(values, {
+        onSuccess: data => {
+          auth.login(data.data.token, data.data.userId)
+        },
+        onError: processAuthError,
       })
     }
   }
@@ -96,16 +72,15 @@ export const AuthConnector = () => {
         {({ values, validateForm }) => (
           <Grid
             gap="16px"
-            sx={{ padding: '24px 0', display: 'flex', flexDirection: 'column' }}
+            sx={{
+              padding: '24px 0',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px',
+            }}
           >
             <Field name={FormNames.Username} component={UsernameField} />
-
-            <Box sx={{ height: '4px' }} />
-
             <Field name={FormNames.Password} component={PasswordField} />
-
-            <Box sx={{ height: '4px' }} />
-
             <Box sx={{ display: 'flex', gap: '16px' }}>
               <Button
                 variant="outlined"

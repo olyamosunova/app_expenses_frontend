@@ -4,16 +4,18 @@ import {
   useAddTemporaryExpenses,
   usePermanentExpenses,
 } from 'features/expenses'
+import { expensesKeys } from 'features/expenses/query-keys'
+import { TResponseError } from 'features/types'
 import { FormikHelpers } from 'formik'
 import { useContext } from 'react'
 import { useQueryClient } from 'react-query'
 import { PERMANENT_CATEGORY_KEYS } from 'shared/constants'
+import { snackTrigger } from 'shared/snack'
 import { PageConnector } from 'shared/template/page'
 
 import { TGetPermanentExpenseResponse } from 'api/expense/types'
 
 import { AuthContext } from '../../../context'
-import { expensesKeys } from '../../../features/expenses/query-keys'
 import { DEFAULT_TEMPORARY_CATEGORY } from '../constants'
 import {
   PermanentFormNames,
@@ -45,12 +47,21 @@ const getInitialPermanentValues = (
   return values
 }
 
+const processAddExpenseError = (err: TResponseError) => {
+  const message = err.response?.data?.message
+
+  if (message) {
+    snackTrigger({ message, type: 'error' })
+  }
+}
+
 export const HomePageConnector = () => {
   const auth = useContext(AuthContext)
   const queryClient = useQueryClient()
 
   const { data } = usePermanentExpenses({
     onError: error => {
+      processAddExpenseError(error)
       if (error?.response?.status === 401) {
         auth.logout()
       }
@@ -74,6 +85,7 @@ export const HomePageConnector = () => {
           queryClient.invalidateQueries(expensesKeys.allTemporaryExpenses)
         }
       },
+      onError: processAddExpenseError,
     })
   }
 
@@ -93,6 +105,7 @@ export const HomePageConnector = () => {
             queryClient.invalidateQueries(expensesKeys.permanentExpenses())
           }
         },
+        onError: processAddExpenseError,
       },
     )
   }

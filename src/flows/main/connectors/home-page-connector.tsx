@@ -1,8 +1,7 @@
 import { Box, Button } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { paths } from 'shared/routing'
-
-import { PageConnector } from '../../../shared/template/page'
+import { PageConnector } from 'shared/template/page'
 
 export const HomePageConnector = () => {
   return (

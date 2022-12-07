@@ -1,8 +1,9 @@
-import { TFormValues } from '../../flows/auth/types'
 import { makeRequest } from '../make-request'
 
-export const login = (values: TFormValues) =>
-  makeRequest<{ token: string; userId: string }>({
+import { TLoginPayload, TLoginResponse } from './types'
+
+export const login = (values: TLoginPayload) =>
+  makeRequest<TLoginResponse>({
     endpoint: '/auth/login',
     method: 'POST',
     params: {

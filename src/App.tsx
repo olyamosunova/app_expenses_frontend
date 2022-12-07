@@ -13,6 +13,8 @@ import { HomePageConnector as MainHomePageConnector } from 'flows/main'
 import { Loader } from 'ui/atoms'
 import { NotFound } from 'ui/pages'
 
+import { SnackBarConnector } from './shared/snack'
+
 const queryClient = new QueryClient()
 
 export const App = () => {
@@ -42,6 +44,7 @@ export const App = () => {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Router>
+          <SnackBarConnector />
         </QueryClientProvider>
       </AuthContext.Provider>
     )
@@ -72,6 +75,7 @@ export const App = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
+        <SnackBarConnector />
       </QueryClientProvider>
     </AuthContext.Provider>
   )
