@@ -6,4 +6,7 @@ export const paths = {
   addExpenses: {
     home: '/add',
   },
+  auth: {
+    home: '/auth',
+  },
 }
