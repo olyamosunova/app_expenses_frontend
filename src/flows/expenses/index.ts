@@ -1,1 +1,1 @@
-export { HomePageConnector } from './connectors'
+export { HomePageConnector, ShowCategoryExpenses } from './connectors'

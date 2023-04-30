@@ -11,17 +11,20 @@ import {
 } from '@mui/material'
 
 import { TExpense, TTableExpenses } from '../../../types'
+import { ExpensesTableRow } from '../../atoms'
 
 type Props<T extends string> = {
   isEmptyTable: boolean
   expenses: TTableExpenses<T>
   categoryMapper: Record<T, string>
+  isShowDetail?: boolean
 }
 
 export const ExpensesTable = <T extends string>({
   isEmptyTable,
   expenses,
   categoryMapper,
+  isShowDetail = true,
 }: Props<T>) => {
   if (isEmptyTable) {
     return <Typography>Нет данных за выбранный период</Typography>
@@ -41,16 +44,18 @@ export const ExpensesTable = <T extends string>({
           <TableRow>
             <TableCell>Категория</TableCell>
             <TableCell sx={{ width: '45%' }}>Общая сумма</TableCell>
+            {isShowDetail ? <TableCell /> : null}
           </TableRow>
         </TableHead>
         <TableBody>
           {expensesEntries.map(([category, rows], index) => (
-            <TableRow key={index}>
-              <TableCell>{categoryMapper[category as T]}</TableCell>
-              <TableCell align="center">
-                {rows.reduce((acc, item) => acc + item.money, 0).toFixed(2)} €
-              </TableCell>
-            </TableRow>
+            <ExpensesTableRow
+              key={index}
+              rows={rows}
+              categoryMapper={categoryMapper}
+              category={category}
+              isShowDetail={isShowDetail}
+            />
           ))}
         </TableBody>
         <TableFooter>

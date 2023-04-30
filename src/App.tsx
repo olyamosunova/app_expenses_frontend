@@ -7,7 +7,10 @@ import { paths } from 'shared/routing'
 
 import { HomePageConnector as AddHomePageConnector } from 'flows/add-expenses'
 import { AuthConnector } from 'flows/auth'
-import { HomePageConnector as ShowHomePageConnector } from 'flows/expenses'
+import {
+  HomePageConnector as ShowHomePageConnector,
+  ShowCategoryExpenses,
+} from 'flows/expenses'
 
 import { Loader } from 'ui/atoms'
 
@@ -28,6 +31,10 @@ const withAuthRoutes: TRoute[] = [
   {
     path: paths.showExpenses.home,
     element: <ShowHomePageConnector />,
+  },
+  {
+    path: paths.showExpenses.category,
+    element: <ShowCategoryExpenses />,
   },
   {
     path: '*',
