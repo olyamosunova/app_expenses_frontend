@@ -1,19 +1,20 @@
 import { Box } from '@mui/material'
-import { useState } from 'react'
+import { useStore } from 'effector-react'
 import { PageConnector } from 'shared/template/page'
 
+import { Col } from 'ui/core'
 import { DatePickerCalendar } from 'ui/molecules'
 
-import { Col } from '../../../ui/core'
+import { $expensesStartDate, setExpensesStartDate } from '../model'
 
 import { PermanentExpensesConnector } from './permanent-expenses-connector'
 import { TemporaryExpensesConnector } from './temporary-expenses-connector'
 
 export const HomePageConnector = () => {
-  const [date, setDate] = useState(new Date().toISOString())
+  const date = useStore($expensesStartDate)
 
   const handleChangeDates = (value: Date) => {
-    setDate(value.toISOString())
+    setExpensesStartDate(value.toISOString())
   }
 
   return (

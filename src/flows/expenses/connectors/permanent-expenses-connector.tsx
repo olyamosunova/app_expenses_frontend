@@ -39,7 +39,7 @@ export const PermanentExpensesConnector = () => {
     },
   })
 
-  const permanentExpenses = data?.data?.[0]?.values ?? []
+  const permanentExpenses = data?.data?.expenses ?? []
 
   return (
     <AccordionBlock id="permanent-expenses" title="Постоянные расходы">
@@ -52,6 +52,7 @@ export const PermanentExpensesConnector = () => {
           categoryMapper={PERMANENT_CATEGORY}
           isEmptyTable={!Boolean(permanentExpenses.length)}
           expenses={mapPermanentExpenses(permanentExpenses)}
+          isShowDetail={false}
         />
       )}
     </AccordionBlock>

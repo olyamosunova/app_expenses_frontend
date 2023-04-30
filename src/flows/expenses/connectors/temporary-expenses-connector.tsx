@@ -50,7 +50,7 @@ export const TemporaryExpensesConnector = ({ date }: Props) => {
     },
   )
 
-  const temporaryExpenses = data?.data ?? []
+  const temporaryExpenses = data?.data?.expenses ?? []
 
   return (
     <AccordionBlock

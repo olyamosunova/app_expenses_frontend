@@ -13,7 +13,7 @@ import { PERMANENT_CATEGORY_KEYS } from 'shared/constants'
 import { snackTrigger } from 'shared/snack'
 import { PageConnector } from 'shared/template/page'
 
-import { TGetPermanentExpenseResponse } from 'api/expense/types'
+import { TGetPermanentExpenseItem } from 'api/expense/types'
 
 import { AuthContext } from '../../../context'
 import { DEFAULT_TEMPORARY_CATEGORY } from '../constants'
@@ -35,7 +35,7 @@ const defaultTemporaryExpenseValues: TTemporaryFormValues = {
 }
 
 const getInitialPermanentValues = (
-  initialValues: TGetPermanentExpenseResponse['values'],
+  initialValues: TGetPermanentExpenseItem[],
 ): TPermanentFormValues[] => {
   const values = Object.values(PERMANENT_CATEGORY_KEYS).map(category => ({
     [PermanentFormNames.Category]: category,
@@ -68,8 +68,8 @@ export const HomePageConnector = () => {
     },
   })
 
-  const permanentExpenses = data?.data?.[0]?.values ?? []
-  const permanentId = data?.data?.[0]?._id
+  const permanentExpenses = data?.data?.expenses ?? []
+  const permanentId = data?.data?.id
 
   const addTemporaryExpense = useAddTemporaryExpenses()
   const addPermanentExpenses = useAddPermanentExpenses()
