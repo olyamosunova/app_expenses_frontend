@@ -6,11 +6,11 @@ import { TAddPermanentExpenseResponse } from 'api/expense/types'
 
 import { TResponseError } from '../types'
 
-type TParameters = Parameters<typeof expensesApi.addPermanentExpenses>
+type TParameters = Parameters<typeof expensesApi.addPermanentExpenses>[0]
 
 export const useAddPermanentExpenses = () =>
   useMutation<
     AxiosResponse<TAddPermanentExpenseResponse>,
     TResponseError,
     TParameters
-  >(([id, values]) => expensesApi.addPermanentExpenses(id, values))
+  >(payload => expensesApi.addPermanentExpenses(payload))

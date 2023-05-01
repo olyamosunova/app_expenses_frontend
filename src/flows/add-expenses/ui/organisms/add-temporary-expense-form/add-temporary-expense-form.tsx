@@ -3,12 +3,7 @@ import { Field, Formik, FormikHelpers } from 'formik'
 
 import { TemporaryFormNames, TTemporaryFormValues } from '../../../types'
 import { validateForm } from '../../../utils'
-import {
-  CategoryField,
-  CommentField,
-  DateField,
-  MoneyField,
-} from '../../molecules'
+import { CategoryField, CommentField, MoneyField } from '../../molecules'
 
 type Props = {
   defaultValues: TTemporaryFormValues
@@ -37,7 +32,6 @@ export const AddTemporaryExpenseForm = ({
             flexDirection: 'column',
           }}
         >
-          <Field name={TemporaryFormNames.Date} component={DateField} />
           <Field name={TemporaryFormNames.Category} component={CategoryField} />
 
           <Box sx={{ height: '4px' }} />
