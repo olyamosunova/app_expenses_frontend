@@ -1,4 +1,5 @@
 import { Box } from '@mui/material'
+import { useGate, useStore } from 'effector-react'
 import {
   useAddPermanentExpenses,
   useAddTemporaryExpenses,
@@ -16,19 +17,21 @@ import { PageConnector } from 'shared/template/page'
 import { TGetPermanentExpenseItem } from 'api/expense/types'
 
 import { AuthContext } from '../../../context'
+import { getPeriodExpenses } from '../../expenses/utils'
 import { DEFAULT_TEMPORARY_CATEGORY } from '../constants'
+import { $addedExpenseDate, AddPageGate, setAddedExpenseDate } from '../model'
 import {
   PermanentFormNames,
   TPermanentFormValues,
   TTemporaryFormValues,
 } from '../types'
+import { DatePicker } from '../ui/molecules'
 import {
   AddPermanentExpenseForm,
   AddTemporaryExpenseForm,
 } from '../ui/organisms'
 
 const defaultTemporaryExpenseValues: TTemporaryFormValues = {
-  date: new Date(),
   category: DEFAULT_TEMPORARY_CATEGORY.value,
   money: '',
   comment: '',
@@ -58,8 +61,13 @@ const processAddExpenseError = (err: TResponseError) => {
 export const HomePageConnector = () => {
   const auth = useContext(AuthContext)
   const queryClient = useQueryClient()
+  const date = useStore($addedExpenseDate)
 
-  const { data } = usePermanentExpenses({
+  useGate(AddPageGate)
+
+  const dateObj = new Date(date)
+
+  const { data } = usePermanentExpenses(dateObj, {
     onError: error => {
       processAddExpenseError(error)
       if (error?.response?.status === 401) {
@@ -78,16 +86,22 @@ export const HomePageConnector = () => {
     values: TTemporaryFormValues,
     helpers: FormikHelpers<TTemporaryFormValues>,
   ) => {
-    return addTemporaryExpense.mutateAsync(values, {
-      onSuccess: data => {
-        if (data?.data?.expense) {
-          helpers.resetForm()
-          snackTrigger({ message: 'Ваш расход успешно записан!' })
-          queryClient.invalidateQueries(expensesKeys.allTemporaryExpenses)
-        }
+    return addTemporaryExpense.mutateAsync(
+      {
+        ...values,
+        date: new Date(date),
       },
-      onError: processAddExpenseError,
-    })
+      {
+        onSuccess: data => {
+          if (data?.data?.expense) {
+            helpers.resetForm()
+            snackTrigger({ message: 'Ваш расход успешно записан!' })
+            queryClient.invalidateQueries(expensesKeys.allTemporaryExpenses)
+          }
+        },
+        onError: processAddExpenseError,
+      },
+    )
   }
 
   const handleSubmitPermanentExpense = async (values: {
@@ -99,12 +113,18 @@ export const HomePageConnector = () => {
     }))
 
     return addPermanentExpenses.mutateAsync(
-      [permanentId ?? '', { values: mappedData }],
+      {
+        id: permanentId ?? '',
+        data: mappedData,
+        date: dateObj,
+      },
       {
         onSuccess: data => {
           if (data?.data?.expense) {
             snackTrigger({ message: 'Постоянные расходы успешно обновлены!' })
-            queryClient.invalidateQueries(expensesKeys.permanentExpenses())
+            queryClient.invalidateQueries(
+              expensesKeys.permanentExpenses(dateObj),
+            )
           }
         },
         onError: processAddExpenseError,
@@ -114,9 +134,20 @@ export const HomePageConnector = () => {
 
   const permanentInitialValues = getInitialPermanentValues(permanentExpenses)
 
+  const handleChangeDate = (date: Date) => {
+    setAddedExpenseDate(date.toISOString())
+  }
+
   return (
     <PageConnector>
       <Box>
+        <DatePicker
+          isDisabled={
+            addPermanentExpenses.isLoading || addTemporaryExpense.isLoading
+          }
+          value={date}
+          onChange={handleChangeDate}
+        />
         <AddTemporaryExpenseForm
           onSubmitForm={handleSubmitTemporaryExpense}
           defaultValues={defaultTemporaryExpenseValues}

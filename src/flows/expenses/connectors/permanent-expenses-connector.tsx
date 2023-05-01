@@ -26,10 +26,16 @@ const processGetExpenseError = (err: TResponseError) => {
   }
 }
 
-export const PermanentExpensesConnector = () => {
+type Props = {
+  date: string
+}
+
+export const PermanentExpensesConnector = ({ date }: Props) => {
   const auth = useContext(AuthContext)
 
-  const { data, isLoading } = usePermanentExpenses({
+  const dateObj = new Date(date)
+
+  const { data, isLoading } = usePermanentExpenses(dateObj, {
     onError: error => {
       processGetExpenseError(error)
 

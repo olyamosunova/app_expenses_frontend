@@ -3,17 +3,16 @@ import { makeRequest } from '../make-request'
 import { TAddPermanentExpenseResponse } from './types'
 
 type TPayload = {
-  values: { category: string; money: number }[]
+  id: string
+  data: { category: string; money: number }[]
+  date: Date
 }
 
-export const addPermanentExpenses = (id: string, values: TPayload) =>
+export const addPermanentExpenses = (body: TPayload) =>
   makeRequest<TAddPermanentExpenseResponse>({
     endpoint: '/permanent-expense/create',
     method: 'PUT',
     params: {
-      body: {
-        id,
-        values,
-      },
+      body,
     },
   })

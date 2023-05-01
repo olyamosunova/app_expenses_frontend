@@ -1,5 +1,4 @@
 export enum TemporaryFormNames {
-  Date = 'date',
   Category = 'category',
   Money = 'money',
   Comment = 'comment',
@@ -16,7 +15,6 @@ export type TOption = {
 }
 
 export type TTemporaryFormValues = {
-  [TemporaryFormNames.Date]: Date
   [TemporaryFormNames.Category]: string
   [TemporaryFormNames.Money]: string
   [TemporaryFormNames.Comment]: string

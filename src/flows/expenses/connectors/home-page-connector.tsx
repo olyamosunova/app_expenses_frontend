@@ -37,7 +37,7 @@ export const HomePageConnector = () => {
           />
 
           <Col>
-            <PermanentExpensesConnector />
+            <PermanentExpensesConnector date={date} />
             <TemporaryExpensesConnector date={date} />
           </Col>
         </Box>
