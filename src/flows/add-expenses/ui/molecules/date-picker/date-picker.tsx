@@ -12,7 +12,7 @@ export const DatePicker = ({ isDisabled, value, onChange }: Props) => {
       isDisabled={isDisabled}
       date={new Date(value)}
       views={['day']}
-      label="Записать расходы за"
+      label="Record expenses for"
       onChangeDate={onChange}
     />
   )

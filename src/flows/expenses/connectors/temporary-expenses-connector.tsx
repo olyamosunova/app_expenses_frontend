@@ -55,7 +55,7 @@ export const TemporaryExpensesConnector = ({ date }: Props) => {
   return (
     <AccordionBlock
       id="temporary-expenses"
-      title="Переменные расходы"
+      title="Changing expenses"
       isExpendedAtFirst
     >
       {isLoading ? (

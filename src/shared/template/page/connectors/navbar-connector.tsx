@@ -21,26 +21,30 @@ export const NavbarConnector = () => {
     <Box component="nav" sx={{ textAlign: 'center' }}>
       <List sx={{ display: 'flex', background: theme.palette.primary.dark }}>
         <ListItem disablePadding>
-          <ListItemButton sx={{ textAlign: 'center' }}>
+          <ListItemButton
+            sx={{ textAlign: 'center', justifyContent: 'center' }}
+          >
             <Link
               to={paths.showExpenses.home}
               style={{ textDecoration: 'none' }}
             >
               <ListItemText
-                primary="Расходы"
+                primary="Expenses"
                 sx={{ color: theme.palette.common.white }}
               />
             </Link>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton sx={{ textAlign: 'center' }}>
+          <ListItemButton
+            sx={{ textAlign: 'center', justifyContent: 'center' }}
+          >
             <Link
               to={paths.addExpenses.home}
               style={{ textDecoration: 'none' }}
             >
               <ListItemText
-                primary="Добавить"
+                primary="Add"
                 sx={{
                   color: theme.palette.common.white,
                 }}
@@ -49,10 +53,12 @@ export const NavbarConnector = () => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton sx={{ textAlign: 'center' }}>
+          <ListItemButton
+            sx={{ textAlign: 'center', justifyContent: 'center' }}
+          >
             <ListItemText
               onClick={logout}
-              primary="Выйти"
+              primary="Log out"
               sx={{ color: theme.palette.common.white }}
             />
           </ListItemButton>

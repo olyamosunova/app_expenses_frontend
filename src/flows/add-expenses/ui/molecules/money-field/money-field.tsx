@@ -13,7 +13,7 @@ export const MoneyField = ({
       disabled={form.isSubmitting}
       error={Boolean(getIn(form.errors, field.name))}
       id="money"
-      label="Введите потраченную сумму"
+      label="Enter the amount spent"
       type="number"
       InputLabelProps={{
         shrink: true,

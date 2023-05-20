@@ -13,7 +13,7 @@ export const PasswordField = ({ field, form, isDisabled }: Props) => {
       {...field}
       error={Boolean(getIn(form.errors, field.name))}
       id="password"
-      label="Введите пароль"
+      label="Enter your password"
       type="password"
       disabled={isDisabled}
       InputLabelProps={{

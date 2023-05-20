@@ -1,7 +1,7 @@
 import { FormNames, TFormValues } from '../types'
 
 const ERRORS_TEXTS = {
-  required: 'Заполните поле',
+  required: 'Required field',
 }
 
 export const validateForm = (values: TFormValues) => {

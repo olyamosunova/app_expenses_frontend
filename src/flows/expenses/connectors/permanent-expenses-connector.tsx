@@ -48,7 +48,7 @@ export const PermanentExpensesConnector = ({ date }: Props) => {
   const permanentExpenses = data?.data?.expenses ?? []
 
   return (
-    <AccordionBlock id="permanent-expenses" title="Постоянные расходы">
+    <AccordionBlock id="permanent-expenses" title="Repeated expenses">
       {isLoading ? (
         <Container>
           <Loader />
