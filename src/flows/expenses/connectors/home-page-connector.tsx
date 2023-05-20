@@ -31,7 +31,7 @@ export const HomePageConnector = () => {
           <DatePickerCalendar
             date={new Date(date)}
             views={['year', 'month']}
-            label="Показано за:"
+            label="Shown for:"
             openTo="month"
             onChangeDate={handleChangeDates}
           />

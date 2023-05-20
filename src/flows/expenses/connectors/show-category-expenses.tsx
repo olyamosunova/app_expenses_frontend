@@ -17,21 +17,6 @@ import { TemporaryCategory } from 'types'
 import { $expensesStartDate } from '../model'
 import { getPeriodExpenses } from '../utils'
 
-const MONTHS_NAMES = [
-  'Январь',
-  'Февраль',
-  'Март',
-  'Апрель',
-  'Май',
-  'Июнь',
-  'Июль',
-  'Август',
-  'Сентябрь',
-  'Октябрь',
-  'Ноябрь',
-  'Декабрь',
-]
-
 export const ShowCategoryExpenses = () => {
   const { id }: { id?: string } = useParams()
   const date = useStore($expensesStartDate)
@@ -54,7 +39,6 @@ export const ShowCategoryExpenses = () => {
 
   const expenses = expensesData?.data?.expenses ?? []
 
-  const month = MONTHS_NAMES[new Date(date).getMonth()]
   const category = TEMPORARY_CATEGORY[id as TemporaryCategory]
 
   return (
@@ -70,18 +54,21 @@ export const ShowCategoryExpenses = () => {
         >
           <>
             <h1>
-              Категория{' '}
+              Category{' '}
               <span style={{ color: theme.palette.info.dark }}>
                 "{category}"
               </span>{' '}
-              за <span style={{ color: theme.palette.info.dark }}>{month}</span>
+              for{' '}
+              <span style={{ color: theme.palette.info.dark }}>
+                {format(new Date(date), 'MMMM')}
+              </span>
             </h1>
 
             <Table>
               <TableHead>
-                <TableCell>Дата</TableCell>
-                <TableCell>Сумма</TableCell>
-                <TableCell>Комментарий</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Description</TableCell>
               </TableHead>
               {expenses.map((item, index) => (
                 <TableRow key={index}>

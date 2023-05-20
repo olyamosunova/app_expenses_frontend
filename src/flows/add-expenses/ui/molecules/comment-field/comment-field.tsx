@@ -13,7 +13,7 @@ export const CommentField = ({
       disabled={form.isSubmitting}
       error={Boolean(getIn(form.errors, field.name))}
       id="comment"
-      label="Введите комментарий (необязательно)"
+      label="Enter a description (optional)"
       type="text"
       InputLabelProps={{
         shrink: true,

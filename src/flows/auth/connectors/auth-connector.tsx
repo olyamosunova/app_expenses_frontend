@@ -64,7 +64,7 @@ export const AuthConnector = () => {
 
   return (
     <Box sx={{ padding: '16px' }}>
-      <Typography variant="subtitle1">Зайдите или зарегистрируйтесь</Typography>
+      <Typography variant="subtitle1">Login or Register</Typography>
 
       <Formik
         onSubmit={() => {}}
@@ -97,14 +97,14 @@ export const AuthConnector = () => {
                 disabled={isDisabled}
                 onClick={() => loginHandler(values, validateForm)}
               >
-                {login.isLoading ? 'Вход ...' : 'Войти'}
+                {login.isLoading ? 'Login ...' : 'Sign in'}
               </Button>
               <Button
                 variant="contained"
                 disabled={isDisabled}
                 onClick={() => registerHandler(values, validateForm)}
               >
-                {register.isLoading ? 'Регистрация ...' : 'Регистрация'}
+                {register.isLoading ? 'Registration ...' : 'Registration'}
               </Button>
             </Box>
           </Grid>

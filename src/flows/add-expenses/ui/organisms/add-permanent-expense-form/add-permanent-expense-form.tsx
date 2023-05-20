@@ -60,7 +60,7 @@ export const AddPermanentExpenseForm = ({
   onSubmitForm,
 }: Props) => {
   return (
-    <AccordionBlock id="permanent-expenses-add" title="Постоянные расходы">
+    <AccordionBlock id="permanent-expenses-add" title="Repeated expenses">
       <Formik<{ values: TPermanentFormValues[] }, unknown>
         onSubmit={onSubmitForm}
         initialValues={defaultValues}
@@ -100,7 +100,7 @@ export const AddPermanentExpenseForm = ({
                 handleSubmit(values)
               }}
             >
-              {isSubmitting ? 'Сохраняется...' : 'Сохранить'}
+              {isSubmitting ? 'Saving...' : 'Save'}
             </Button>
           </Grid>
         )}

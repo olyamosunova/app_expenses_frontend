@@ -27,7 +27,7 @@ export const ExpensesTable = <T extends string>({
   isShowDetail = true,
 }: Props<T>) => {
   if (isEmptyTable) {
-    return <Typography>Нет данных за выбранный период</Typography>
+    return <Typography>No data for the selected period</Typography>
   }
 
   const cellsCount = Math.max(
@@ -42,8 +42,8 @@ export const ExpensesTable = <T extends string>({
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Категория</TableCell>
-            <TableCell sx={{ width: '45%' }}>Общая сумма</TableCell>
+            <TableCell>Category</TableCell>
+            <TableCell sx={{ width: '45%' }}>Total amount</TableCell>
             {isShowDetail ? <TableCell /> : null}
           </TableRow>
         </TableHead>
@@ -62,7 +62,7 @@ export const ExpensesTable = <T extends string>({
           <TableRow>
             <TableCell colSpan={cellsCount}>
               <Typography variant="subtitle1" sx={{ fontWeight: '500' }}>
-                Общая сумма по всем категориям:{' '}
+                Total amount for all categories:{' '}
                 {expensesValues
                   .reduce((acc, item) => {
                     const cost = item.reduce(

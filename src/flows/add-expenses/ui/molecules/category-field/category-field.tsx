@@ -11,7 +11,7 @@ export const CategoryField = ({
   return (
     <FormControl fullWidth>
       <InputLabel variant="standard" htmlFor="category-select-label">
-        Выберите категорию расходов
+        Choose an expense category
       </InputLabel>
       <NativeSelect
         {...field}

@@ -50,7 +50,7 @@ export const AddTemporaryExpenseForm = ({
               handleSubmit(values)
             }}
           >
-            {isSubmitting ? 'Сохраняется...' : 'Сохранить'}
+            {isSubmitting ? 'Saving...' : 'Save'}
           </Button>
         </Grid>
       )}
